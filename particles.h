@@ -1,17 +1,12 @@
+#ifndef __PARTICLES
+#define __PARTICLES
+
+#include "gravity.c"
+#include "raylib.h"
+#include "report.h"
 #include <math.h>
 #include <stdbool.h>
 #include <stdio.h>
-#ifndef __PARTICLES
-
-#include "raylib.h"
-#define __PARTICLES
-
-#ifndef __REPORTS
-#include "report.h"
-#endif
-
-#define GRAVITY 0.01
-#define GRAVITY_DAMP_EFFECT 0.95
 
 Report report = {.whites = 0, .blues = 0, .reds = 0, .greens = 0};
 
@@ -35,7 +30,7 @@ void UpdateParticle(Particle *particle) {
 
   particle->xCoord += particle->xVelocity;
   particle->yCoord += particle->yVelocity;
-  particle->yVelocity += GRAVITY;
+  particle->yVelocity += GetGravity()->gforce;
 
   bool hasCollided = false;
 
@@ -114,8 +109,8 @@ void UpdateParticle(Particle *particle) {
   }
   // reduce velocity
   if (hasCollided) {
-    particle->xVelocity *= GRAVITY_DAMP_EFFECT + 0.1;
-    particle->yVelocity *= GRAVITY_DAMP_EFFECT + 0.1;
+    particle->xVelocity *= GetGravity()->damp + 0.1;
+    particle->yVelocity *= GetGravity()->damp + 0.1;
   }
 }
 
@@ -177,12 +172,12 @@ void ParticleCollisions(Particle particles[], int size) {
         particles[j].xVelocity = v2tan;
         particles[j].yVelocity = v2norm;
         // -----------------------------------------------------
-        if (areColliding) {
+        if (GetGravity()->isEnabled) {
           // apply gravity, and slow things down
-          particles[i].xVelocity *= GRAVITY_DAMP_EFFECT;
-          particles[i].yVelocity *= GRAVITY_DAMP_EFFECT;
-          particles[j].xVelocity *= GRAVITY_DAMP_EFFECT;
-          particles[j].yVelocity *= GRAVITY_DAMP_EFFECT;
+          particles[i].xVelocity *= GetGravity()->damp;
+          particles[i].yVelocity *= GetGravity()->damp;
+          particles[j].xVelocity *= GetGravity()->damp;
+          particles[j].yVelocity *= GetGravity()->damp;
         }
       }
     }
