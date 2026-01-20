@@ -5,10 +5,7 @@
 gcc -o main main.c -Wall -Wextra -lraylib -lGL -lm -lpthread -ldl -lrt -lX11 -O3 && ./main
 ```
 
-
-https://github.com/user-attachments/assets/019ff989-0a01-4984-a369-f09174a7ec2b
-
-
+https://github.com/user-attachments/assets/81aa892f-8a6d-44ad-b2cb-66981e131282
 
 ### Dependencies
 - [raylib](https://github.com/raysan5/raylib)
